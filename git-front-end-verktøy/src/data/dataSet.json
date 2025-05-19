@@ -5,14 +5,14 @@
       "description": "Telefonnummer (Norwegian phone number)",
       "regex": "^\\+47\\s?[0-9]{8}$|^[0-9]{8}$",
       "validSample": "+47 12345678",
-      "allowedCharacters": ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "+", " "]
+      "allowedCharacters": ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "+", " "]
     },
     {
       "type": "personnummer",
       "description": "Fødselsnummer (Norwegian national ID number)",
       "regex": "^\\d{11}$",
       "validSample": "01020312345",
-      "allowedCharacters": ["9", "8", "7", "6", "4", "4", "3", "2", "1", "0"],
+      "allowedCharacters": ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0"],
       "dateValidation": {
         "position": [0, 6],
         "format": "ddMMyy",
