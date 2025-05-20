@@ -1,4 +1,5 @@
 import type {DataType} from "../../Types/DataType"
+import "./Selector.css"
 
 type SelectorProps = {
     onChange: React.ChangeEventHandler<HTMLSelectElement>
