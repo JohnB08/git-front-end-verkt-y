@@ -1,26 +1,20 @@
 import { useState } from "react";
 import inputData from "./data/dataSet.json";
+import { Selector } from "./Components/Selector/Selector";
+import "./App.css"
+import { Output } from "./Components/Output/Output";
+import type { DataType } from "./Types/DataType";
+import { Button } from "./Components/Button/Button";
 
 const App = () => {
-  const [selectedType, setSelectedType] = useState<selectedtType | null>(null);
+  const [selectedType, setSelectedType] = useState<DataType | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
 
-  type selectedtType = {
-    type: string,
-    description: string,
-    regex: string,
-    validSample: string,
-    allowedCharacters: string[],
-    dateValidation?: undefined | {
-      position: number[],
-      format: string,
-      note: string
-    }
-  }
+
 
   const handleTypeChange = (e: { target: { value: string; }; }) => {
-    const selected = inputData.inputTypes.find(type => type.type === e.target.value) as selectedtType;
+    const selected = inputData.inputTypes.find(type => type.type === e.target.value) as DataType;
     setSelectedType(selected);
     setInputValue("");
     setIsValid(null);
@@ -53,87 +47,29 @@ const App = () => {
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial", maxWidth: "500px", width: "80vw", margin: "auto" }}>
       <h1>Registrer ankomst</h1>
-
-      <select onChange={handleTypeChange} defaultValue="">
-        <option value="" disabled style={{fontSize: "inherit"}}>-- Velg type --</option>
-        {inputData.inputTypes.map((inputType) => (
-          <option key={inputType.type} value={inputType.type}>
-            {inputType.description}
-          </option>
-        ))}
-      </select>
+      <Selector onChange={handleTypeChange} inputTypes={inputData.inputTypes}></Selector>
 
       {selectedType && (
         <>
-          <div
-            style={{
-              marginTop: "2rem",
-              padding: "1rem",
-              fontSize: "1.5rem",
-              backgroundColor: "inherit",
-              textAlign: "center",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              color: "inherit"
-            }}
-          >
-            {inputValue || "Trykk på tastene"}
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "1rem",
-              marginTop: "1.5rem"
-            }}
-          >
+          <Output inputValue={inputValue} placeHolderText="Trykk på tastene!"></Output>
+          <div className="inputField">
             {selectedType.allowedCharacters.map((char, index) => (
-              <button
-                key={index}
-                onClick={() => handleButtonClick(char)}
-              >
-                {char}
-              </button>
+              <Button className="" onClick={()=>handleButtonClick(char)} innerText={char} key={index}/>
             ))}
-            <button
+            <Button
               onClick={handleBackspace}
-              style={{
-                gridColumn: "span 2",
-                padding: "1rem",
-                fontSize: "1.2rem",
-                borderRadius: "8px",
-                border: "1px solid #aaa",
-                backgroundColor: "inherit",
-                color: "inherit"
-              }}
-            >
-              ⬅ Tilbake
-            </button>
-            <button
+              innerText="⬅ Tilbake"
+              className="functionButton backSpace"
+            />
+            <Button
               onClick={handleReset}
-              style={{
-                gridColumn: "span 1",
-                padding: "1rem",
-                fontSize: "1.2rem",
-                borderRadius: "8px",
-                border: "1px solid #aaa",
-                backgroundColor: "inherit",
-                color: "inherit"
-              }}
-            >
-              reset
-            </button>
+              className="functionButton reset"
+              innerText="reset"
+            />
           </div>
 
           {inputValue && (
-            <div
-              style={{
-                marginTop: "1rem",
-                fontWeight: "bold",
-                color: isValid ? "green" : "red"
-              }}
-            >
+            <div className={"validator " + (isValid ? "valid" : "inValid")}>
               {isValid ? "Gyldig format ✅" : "Ugyldig format ❌"}
             </div>
           )}
